@@ -143,7 +143,7 @@ def save_model(model, file_path):
 #-------------
 
 # now calculate the position of each number based on the image
-def get_number_boxs_position(image_location):
+def get_number_boxs_position(image_location, model):
 	"""
 	Take screenshot of the complete 1to50 board, 
 	calculate the x-y co-ordinates of all the numbers present in it.
@@ -210,7 +210,7 @@ def perform_mouse_click_event(position_dict):
 		pyautogui.moveTo(x, y)
 		pyautogui.click(x,y)
 
-def play_game(board_location):
+def play_game(board_location, model):
 	"""
 	The main function, perform the following steps,
 		1. Take screenshot and calculate the number's positions
@@ -220,7 +220,7 @@ def play_game(board_location):
 	# RUN 1: For 1 to 25
 	#-----------------------
 	# first, take screenshot and perform number identification using neural network aloong with number position calculation
-	position_dict = get_number_boxs_position(board_location)
+	position_dict = get_number_boxs_position(board_location, model)
 	# second, init mouse drag and click event for all the numbers
 	perform_mouse_click_event(position_dict)
 
@@ -230,7 +230,7 @@ def play_game(board_location):
 	# RUN 2: For 25 to 50
 	#-----------------------
 	# first, take screenshot and perform number identification using neural network aloong with number position calculation
-	position_dict = get_number_boxs_position(board_location)
+	position_dict = get_number_boxs_position(board_location, model)
 	# second, init mouse drag and click event for all the numbers
 	perform_mouse_click_event(position_dict)
 
