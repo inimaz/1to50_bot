@@ -1,21 +1,15 @@
 # Load the libraries
 import os
-import random
 
 import cv2
-import pyautogui
 import mss
-import numpy as np
 import mss.tools
-import matplotlib.pyplot as plt
-from PIL import Image
-from time import sleep
-from keras.datasets import mnist
-from keras.models import Sequential
+import numpy as np
+import pyautogui
 from keras.layers import Dense
-from keras.layers import Dropout
-from keras.utils import np_utils
+from keras.models import Sequential
 from keras.models import load_model
+from keras.utils import np_utils
 
 
 # TRAINING
@@ -117,9 +111,9 @@ def create_simple_neural_network(input_layer_len, hidden_layer_len, output_layer
     # create model
     model = Sequential()
     # add input and hidden layer
-    model.add(Dense(hidden_layer_len, input_dim=input_layer_len, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(hidden_layer_len, input_dim=input_layer_len, activation='relu'))
     # add output layer
-    model.add(Dense(output_layer_len, kernel_initializer='normal', activation='softmax'))
+    model.add(Dense(output_layer_len, activation='softmax'))
     # Compile model
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     # return the network
@@ -202,7 +196,6 @@ def get_number_boxs_position(image_location, model):
     # status
     print("Whoos..enough learning for today...")
     # print(sorted(position_dict))
-    # return the position dict
     return position_dict
 
 
@@ -239,6 +232,9 @@ def perform_mouse_click_event(position_dict, current_number):
 
 
 def print_missing_ones(position_dict, current_number):
+    """
+    Print all the numbers (if any) that the CNN could not guess its position in the image.
+    """
     d = sorted(position_dict)
     print("Please help! These are the missing values: ")
     if current_number < 25:
@@ -259,13 +255,15 @@ def find_and_click(board_location, model):
         # pyautogui.moveTo(100, 100)
         position_dict = get_number_boxs_position(board_location, model)
         current_number = perform_mouse_click_event(position_dict, current_number)
+
         # random_number = random.randint(-1,1)
         # board_location['top'] += random_number
         # random_number = random.randint(-1,1)
         # board_location['left'] += random_number
         attempt += 1
+        # debug
         # print("Could not figure out number " + str(current_number))
-        if (current_number < 51)&(current_number!=26) :
+        if (current_number < 51) & (current_number != 26):
             print_missing_ones(position_dict, current_number)
             print("current_number is " + str(current_number))
             input("PRESS ENTER TO CONTINUE.")
@@ -288,8 +286,6 @@ def play_game(board_location, model):
 
     # move the mouse out of the way
     pyautogui.moveTo(100, 100)
-
-    sleep(1)
     # RUN 2: For 25 to 50
     # -----------------------
     # first, take screenshot and perform number identification using neural network aloong with number position calculation
